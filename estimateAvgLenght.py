@@ -4,6 +4,9 @@ from cityLoadable import CityLoadable
 from tspEval import distance
 from matplotlib import pyplot as plt
 
+'''
+
+'''
 
 class EstimateAvgLength(CityLoadable):
 
@@ -11,12 +14,9 @@ class EstimateAvgLength(CityLoadable):
         estimated_length = []
         city_locations = self.getCityLocation()
 
-        # print(city_locations)
-        print(n)
         for _ in range(n):
             start = randint(0, CityLoadable.N_CITY - 1)
             dest = randint(0, CityLoadable.N_CITY - 1)
-            # print(start, dest)
             estimated_length.append(
                 distance(list(map(float, city_locations[start])), list(map(float, city_locations[dest]))))
 
