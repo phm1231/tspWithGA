@@ -1,13 +1,13 @@
 from random import randint
 
-from cityLoadable import CityLoadable
+from cityManager import CityManager
 from tspEval import distance
 from matplotlib import pyplot as plt
 
 '''
 
 '''
-
+#안씀
 class EstimateAvgLength(CityLoadable):
 
     def getSampleAvgLength(self, n):

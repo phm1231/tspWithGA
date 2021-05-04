@@ -1,17 +1,17 @@
-import csv
-
 from tourManager import TourManager
-from city import City
 from population import Population
-from GA import GA
+from distanceInfoManager import DistanceInfoManager
+from populationInitializer import populationInitializer
 
-if __name__ == '__main__':
+#안씀
+if __name__ == 'main':
+    distanceInfoManager = DistanceInfoManager()
+    populationInitializer = PopulationInitializer()
+
     n_cities = 1000
     population_size = 50
     n_generations = 10
 
-    city_location_file = open('TSP.csv', 'r', encoding='utf-8')
-    city_location_information = csv.reader(city_location_file)
 
     # Setup cities and tour
     tourmanager = TourManager()
@@ -33,6 +33,6 @@ if __name__ == '__main__':
 
     # Print final results
     print("Finished")
-    print(" distance: " + str(pop.getFittest().getDistance()))
+    print("Final distance: " + str(pop.getFittest().getDistance()))
     print("Solution:")
     print(pop.getFittest())

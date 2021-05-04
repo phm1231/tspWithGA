@@ -1,20 +1,16 @@
 import math
 import random
+import numpy as np
 
-from TourManager import TourManager
+from cityManager import CityManager
 
 
 class Tour:
-    def __init__(self, tourmanager, tour=None):
-        self.tourmanager = tourmanager
-        self.tour = []
+    def __init__(self):
+        self.tour = [None for _ in range(CityManager.N_CITY)]
         self.fitness = 0.0
         self.distance = 0
-        if tour is not None:
-            self.tour = tour
-        else:
-            for _ in range(0, self.tourmanager.numberOfCities()):
-                self.tour.append(None)
+        self.citymanager = CityManager()
 
     def __len__(self):
         return len(self.tour)
@@ -33,12 +29,26 @@ class Tour:
         return geneString
 
     def generateIndividual(self):
-        for cityIndex in range(0, self.tourmanager.numberOfCities()):
-            self.setCity(cityIndex, self.tourmanager.getCity(cityIndex))
-        random.shuffle(self.tour)
+        '''
+        무작위로 시작 city를 선택하여 현재 도시와 가장 가까운 도시를 다음 도시로 선택하여 경로를 생성하여 리턴하는 함수
+        :return path 생성된 경로, length 생성된 경로의 길이:
+        '''
+        visited = set()
+        start_city_index = np.random.randint(0, CityManager.N_CITY)
+        visited.add(start_city_index)
+        while len(visited) < 1000:
+            minimum_distance = 2 ** 31 - 1
+            city_nth = len(visited)-1
+            print('tour', city_nth)
+            for next_city_index in range(CityManager.N_CITY):
+                next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
+                if next_city_length < minimum_distance and next_city_index not in visited:
+                    visited.add(next_city_index)
+                    self.setCity(city_nth, next_city_index)
+                    break
 
-    def getCity(self, tourPosition):
-        return self.tour[tourPosition]
+    def getCity(self, tour_position):
+        return self.tour[tour_position]
 
     def setCity(self, tourPosition, city):
         self.tour[tourPosition] = city
@@ -60,7 +70,7 @@ class Tour:
                     destinationCity = self.getCity(cityIndex + 1)
                 else:
                     destinationCity = self.getCity(0)
-                tourDistance += fromCity.distanceTo(destinationCity)
+                tourDistance += self.citymanager.getCity(fromCity).distanceTo(destinationCity)
             self.distance = tourDistance
         return self.distance
 

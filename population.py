@@ -1,15 +1,16 @@
-from Tour import Tour
+from tour import Tour
 
 
 class Population:
-    def __init__(self, tourmanager, populationSize, initialise):
+    def __init__(self, populationSize, initialise):
         self.tours = []
         for _ in range(0, populationSize):
             self.tours.append(None)
 
         if initialise:
             for i in range(0, populationSize):
-                newTour = Tour(tourmanager)
+                print('population', i)
+                newTour = Tour()
                 newTour.generateIndividual()
                 self.saveTour(i, newTour)
 

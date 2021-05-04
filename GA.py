@@ -1,17 +1,16 @@
 import random
 
-from Population import Population
-from Tour import Tour
+from population import Population
+from tour import Tour
 
 class GA:
-    def __init__(self, tourmanager, mutationRate=0.05, tournamentSize=5, elitism=True):
-        self.tourmanager = tourmanager
+    def __init__(self, mutationRate=0.05, tournamentSize=5, elitism=True):
         self.mutationRate = mutationRate
         self.tournamentSize = tournamentSize
         self.elitism = elitism
 
     def evolvePopulation(self, pop):
-        newPopulation = Population(self.tourmanager, pop.populationSize(), False)
+        newPopulation = Population(pop.populationSize(), False)
         elitismOffset = 0
         if self.elitism:
             newPopulation.saveTour(0, pop.getFittest())
@@ -29,7 +28,7 @@ class GA:
         return newPopulation
 
     def crossover(self, parent1, parent2):
-        child = Tour(self.tourmanager)
+        child = Tour()
 
         startPos = int(random.random() * parent1.tourSize())
         endPos = int(random.random() * parent1.tourSize())
@@ -62,7 +61,7 @@ class GA:
                 tour.setCity(tourPos1, city2)
 
     def tournamentSelection(self, pop):
-        tournament = Population(self.tourmanager, self.tournamentSize, False)
+        tournament = Population(self.tournamentSize, False)
         for i in range(0, self.tournamentSize):
             randomId = int(random.random() * pop.populationSize())
             tournament.saveTour(i, pop.getTour(randomId))
