@@ -36,17 +36,19 @@ class Tour:
         visited = set()
         start_city_index = np.random.randint(0, CityManager.N_CITY)
         visited.add(start_city_index)
-        while len(visited) < 1000:
+        print(len(self.tour))
+        while len(visited) <= 1000:
             minimum_distance = 2 ** 31 - 1
-            city_nth = len(visited)-1
-#print('tour', city_nth)
+            city_nth = len(visited)
+            print(city_nth)
             for next_city_index in range(CityManager.N_CITY):
                 next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
                 if next_city_length < minimum_distance and next_city_index not in visited:
-                    visited.add(next_city_index)
-                    self.setCity(city_nth, next_city_index)
-                    break
-
+                    minimum_distance = next_city_length
+                    minimum_index = next_city_index
+            print('?', minimum_index)
+            self.setCity(city_nth, minimum_index)
+            visited.add(minimum_index)
     def getCity(self, tour_position):
         return self.tour[tour_position]
 
@@ -65,14 +67,12 @@ class Tour:
             tourDistance = 0
             print(self.tour)
             for cityIndex in range(0, self.tourSize()):
-#   print('cityindex is', cityindex)
                 fromCity = self.getCity(cityIndex)
                 destinationCity = None
                 if cityIndex + 1 < self.tourSize():
                     destinationCity = self.citymanager.getCity(cityIndex + 1)
                 else:
                     destinationCity = self.citymanager.getCity(0)
-# tourDistance += self.citymanager.getCity(fromCity).distanceTo(destinationCity)
                 tourDistance += self.citymanager.getCity(fromCity).distanceTo(destinationCity)
             self.distance = tourDistance
         return self.distance

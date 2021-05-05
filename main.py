@@ -7,7 +7,7 @@ from GA import GA
 
 if __name__ == '__main__':
     n_cities = 1000
-    population_size = 50
+    population_size = 1
     n_generations = 10
 
     city_location_file = open('TSP.csv', 'r', encoding='utf-8')
