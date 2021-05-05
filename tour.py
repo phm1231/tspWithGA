@@ -39,7 +39,7 @@ class Tour:
         while len(visited) < 1000:
             minimum_distance = 2 ** 31 - 1
             city_nth = len(visited)-1
-            print('tour', city_nth)
+#print('tour', city_nth)
             for next_city_index in range(CityManager.N_CITY):
                 next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
                 if next_city_length < minimum_distance and next_city_index not in visited:
@@ -63,13 +63,16 @@ class Tour:
     def getDistance(self):
         if self.distance == 0:
             tourDistance = 0
+            print(self.tour)
             for cityIndex in range(0, self.tourSize()):
+#   print('cityindex is', cityindex)
                 fromCity = self.getCity(cityIndex)
                 destinationCity = None
                 if cityIndex + 1 < self.tourSize():
-                    destinationCity = self.getCity(cityIndex + 1)
+                    destinationCity = self.citymanager.getCity(cityIndex + 1)
                 else:
-                    destinationCity = self.getCity(0)
+                    destinationCity = self.citymanager.getCity(0)
+# tourDistance += self.citymanager.getCity(fromCity).distanceTo(destinationCity)
                 tourDistance += self.citymanager.getCity(fromCity).distanceTo(destinationCity)
             self.distance = tourDistance
         return self.distance

@@ -25,7 +25,6 @@ class CityManager:
         city_locations = np.genfromtxt(path, delimiter=',', dtype=float, encoding='UTF-8')
         for index, (x, y) in enumerate(city_locations):
             self.cityLocationInfo.append(City(index, x, y))
-
         distances = []
         for i in range(CityManager.N_CITY):
             i_coordinate = self.cityLocationInfo[i].getLocation()
@@ -44,7 +43,7 @@ class CityManager:
         return self.cityLocationInfo
 
     def getCity(self, city_index):
-        return self.cityLocationInfo[city_index]
+        return self.cityLocationInfo[city_index] # index or location
 
     def getCityDistanceInfo(self):
         return self.cityDistanceInfo
