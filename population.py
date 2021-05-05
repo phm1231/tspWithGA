@@ -27,6 +27,9 @@ class Population:
     def getTour(self, index):
         return self.tours[index]
 
+    def getTours(self):
+        return self.tours
+
     def getFittest(self):
         fittest = self.tours[0]
         for i in range(0, self.populationSize()):

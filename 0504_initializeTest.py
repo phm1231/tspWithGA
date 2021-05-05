@@ -1,11 +1,14 @@
 import csv
+from random import seed
 
 from population import Population
 from GA import GA
 
 if __name__ == '__main__':
-    population_size = 10
-    n_generations = 10
+    population_size = 500
+    n_generations = 500
+
+    seed(0)
 
     # Initialize population
     pop = Population(populationSize=population_size, initialise=True)
