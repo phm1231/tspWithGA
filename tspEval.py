@@ -11,44 +11,45 @@ def distance(x, y):
     dist = np.linalg.norm(np.array(x) - np.array(y))
     return dist
 
-# 1. get solution sequence and reordering (sort from 0)
-with open('example_solution.csv', mode='r', newline='') as solution:
-    
-    # read solution sequence
-    reader = csv.reader(solution)
-    for row in reader:
-        sol.append(int(row[0]))
-    
-    # reordering solution sequence
-    idx = sol.index(0)
+if __name__ == '__main__':
+    # 1. get solution sequence and reordering (sort from 0)
+    with open('example_solution.csv', mode='r', newline='') as solution:
 
-    front = sol[idx:]
-    back = sol[0:idx]
+        # read solution sequence
+        reader = csv.reader(solution)
+        for row in reader:
+            sol.append(int(row[0]))
 
-    sol = front + back
-    
-    # expand 0 city (start) for simplicity
-    sol.append(int(0))
+        # reordering solution sequence
+        idx = sol.index(0)
 
-# 2. get TSP city map
-with open('TSP.csv', mode='r', newline='') as tsp:
-    # read TSP city map
-    reader = csv.reader(tsp)
-    for row in reader:
-        cities.append(row)
+        front = sol[idx:]
+        back = sol[0:idx]
 
-# 3. evaluate solution cost
-total_cost = 0
+        sol = front + back
 
-for idx in range(len(sol) - 1) :
-    # get city positions
-    pos_city_1 = [float(cities[sol[idx]][0]), float(cities[sol[idx]][1])]
-    pos_city_2 = [float(cities[sol[idx+1]][0]), float(cities[sol[idx+1]][1])]
+        # expand 0 city (start) for simplicity
+        sol.append(int(0))
 
-    # distance calculation
-    dist = distance(pos_city_1, pos_city_2)
+    # 2. get TSP city map
+    with open('TSP.csv', mode='r', newline='') as tsp:
+        # read TSP city map
+        reader = csv.reader(tsp)
+        for row in reader:
+            cities.append(row)
 
-    # accumulation
-    total_cost += dist
+    # 3. evaluate solution cost
+    total_cost = 0
 
-print('final cost : ' + str(total_cost))
+    for idx in range(len(sol) - 1) :
+        # get city positions
+        pos_city_1 = [float(cities[sol[idx]][0]), float(cities[sol[idx]][1])]
+        pos_city_2 = [float(cities[sol[idx+1]][0]), float(cities[sol[idx+1]][1])]
+
+        # distance calculation
+        dist = distance(pos_city_1, pos_city_2)
+
+        # accumulation
+        total_cost += dist
+
+    print('final cost : ' + str(total_cost))

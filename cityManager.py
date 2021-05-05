@@ -23,6 +23,7 @@ class CityManager:
     def __init__(self, path='./TSP.csv'):
         self.cityLocationInfo = []
         city_locations = np.genfromtxt(path, delimiter=',', dtype=float, encoding='UTF-8')
+
         for index, (x, y) in enumerate(city_locations):
             self.cityLocationInfo.append(City(index, x, y))
         distances = []
@@ -63,3 +64,5 @@ class CityManager:
 if __name__ == '__main__':
     a = CityManager()
     print(a.getCityLocation())
+else:
+    CityManager = CityManager()
