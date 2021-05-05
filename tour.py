@@ -37,20 +37,22 @@ class Tour:
         start_city_index = np.random.randint(0, CityManager.N_CITY)
         visited.add(start_city_index)
         self.setCity(0, start_city_index)
-        print(len(self.tour))
-        print(self.tour)
+        temp = 0
         while len(visited) < 1000:
             minimum_distance = 2 ** 31 - 1
             city_nth = len(visited)
-            print(city_nth)
+            # print(city_nth)
             for next_city_index in range(CityManager.N_CITY):
                 next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
                 if next_city_length < minimum_distance and next_city_index not in visited:
                     minimum_distance = next_city_length
                     minimum_index = next_city_index
-            # print('?', minimum_index)
             self.setCity(city_nth, minimum_index)
+            temp += minimum_distance
+            start_city_index = minimum_index
             visited.add(minimum_index)
+        # print(temp)
+        print('distance', self.getDistance())
 
     def getCity(self, tour_position):
         return self.tour[tour_position]
@@ -68,15 +70,15 @@ class Tour:
     def getDistance(self):
         if self.distance == 0:
             tourDistance = 0
-            print(self.tour)
+            # print(self.tour)
             for cityIndex in range(0, self.tourSize()):
                 fromCity = self.getCity(cityIndex)
                 destinationCity = None
                 if cityIndex + 1 < self.tourSize():
-                    destinationCity = self.citymanager.getCity(cityIndex + 1)
+                    destinationCity = self.getCity(cityIndex + 1)
                 else:
-                    destinationCity = self.citymanager.getCity(0)
-                tourDistance += self.citymanager.getCity(fromCity).distanceTo(destinationCity)
+                    destinationCity = self.getCity(0)
+                tourDistance += self.citymanager.getDistance(fromCity, destinationCity)
             self.distance = tourDistance
         return self.distance
 

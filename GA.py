@@ -23,7 +23,7 @@ class GA:
         for i in range(elitismOffset, newPopulation.populationSize()):
             parent1 = self.tournamentSelection(pop)
             parent2 = self.tournamentSelection(pop)
-            child = self.crossoverSimple(parent1, parent2)
+            child = self.crossover(parent1, parent2)
             newPopulation.saveTour(i, child)
         for i in range(elitismOffset, newPopulation.populationSize()):
             self.mutate(newPopulation.getTour(i))
@@ -95,7 +95,6 @@ class GA:
         roullete = []
         for rank, tour in enumerate(sortedTours):
             roullete.extend([rank for _ in range(populationSize-rank)])
-        print(roullete)
         return pop.getTour(random.choice(roullete))
 
     # def elitistPreservingSelection(self):
