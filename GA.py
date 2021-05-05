@@ -3,6 +3,7 @@ import random
 from population import Population
 from tour import Tour
 
+
 class GA:
     def __init__(self, mutationRate=0.05, tournamentSize=5, elitism=True):
         self.mutationRate = mutationRate
@@ -17,29 +18,35 @@ class GA:
             elitismOffset = 1
 
         for i in range(elitismOffset, newPopulation.populationSize()):
+            print('this', i)
+            # print('selection1')
             parent1 = self.tournamentSelection(pop)
+            # print('selection2')
             parent2 = self.tournamentSelection(pop)
+            print('crossOver')
             child = self.crossover(parent1, parent2)
             newPopulation.saveTour(i, child)
-
+            print('this', i, 'end')
         for i in range(elitismOffset, newPopulation.populationSize()):
             self.mutate(newPopulation.getTour(i))
-
         return newPopulation
 
     def crossover(self, parent1, parent2):
+        print('Tour?')
         child = Tour()
+        print('isReal?')
 
         startPos = int(random.random() * parent1.tourSize())
         endPos = int(random.random() * parent1.tourSize())
 
+        print('crossOver1')
         for i in range(0, child.tourSize()):
             if startPos < endPos and i > startPos and i < endPos:
                 child.setCity(i, parent1.getCity(i))
             elif startPos > endPos:
                 if not (i < startPos and i > endPos):
                     child.setCity(i, parent1.getCity(i))
-
+        print('crossOver2')
         for i in range(0, parent2.tourSize()):
             if not child.containsCity(parent2.getCity(i)):
                 for ii in range(0, child.tourSize()):
@@ -67,3 +74,7 @@ class GA:
             tournament.saveTour(i, pop.getTour(randomId))
         fittest = tournament.getFittest()
         return fittest
+
+    def roulletteWheelSelection(self, pop):
+        routlletteWheel = Population(self.tournamentSize, False)
+

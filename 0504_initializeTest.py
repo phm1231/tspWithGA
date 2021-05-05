@@ -4,7 +4,7 @@ from population import Population
 from GA import GA
 
 if __name__ == '__main__':
-    population_size = 1
+    population_size = 10
     n_generations = 10
 
     # Initialize population
