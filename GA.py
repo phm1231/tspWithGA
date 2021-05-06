@@ -1,4 +1,5 @@
 import random
+import numpy as np
 
 from population import Population
 from tour import Tour
@@ -19,10 +20,12 @@ class GA:
         if self.elitism:
             newPopulation.saveTour(0, pop.getFittest())
             elitismOffset = 1
-
+        
         for i in range(elitismOffset, newPopulation.populationSize()):
-            parent1 = self.tournamentSelection(pop)
-            parent2 = self.tournamentSelection(pop)
+#            parent1 = self.tournamentSelection(pop)
+#            parent2 = self.tournamentSelection(pop)
+            parent1 = self.roulletteWheelSelection(pop)
+            parent2 = self.roulletteWheelSelection(pop)
             child = self.crossover(parent1, parent2)
             newPopulation.saveTour(i, child)
         for i in range(elitismOffset, newPopulation.populationSize()):
@@ -89,14 +92,39 @@ class GA:
         return fittest
 
     def roulletteWheelSelection(self, pop):
-        tours = pop.getTours()
-        populationSize = pop.populationSize()
-        sortedTours = sorted(tours, key=lambda x: x.fitness)
-        roullete = []
-        for rank, tour in enumerate(sortedTours):
-            roullete.extend([rank for _ in range(populationSize-rank)])
-        return pop.getTour(random.choice(roullete))
+        accumulatedFitness = 0.0
+        fitnessList = []
+        fitnessList.append(accumulatedFitness)
 
+        for i in range(0, pop.populationSize()):
+            accumulatedFitness += pop.getTour(i).getFitness()
+            fitnessList.append(accumulatedFitness)
+
+        selectedValue = random.random() * accumulatedFitness
+
+        for i in range(1, len(fitnessList)):
+            if(fitnessList[i-1] <= selectedValue and selectedValue < fitnessList[i]):
+                selectedTour = pop.getTour(i-1)
+                return selectedTour
+
+        return pop.getFittest() # 아무튼 응급처치
+
+
+
+'''
+        populationSize = pop.populationSize()
+        sortedTours = sorted(tours, key=lambda x: x.fitness) # tours가 fintess 순으로 정렬, 좋은 것부터!
+        roullete = []
+        for rank, tour in enumerate(tours):
+            roullete.extend([rank for _ in range(populationSize - rank)]) # tour들을 확률에 맞게 뽑아
+        return pop.getTour(random.choices( roullete))
+
+
+    def fitnessPrint(self, pop):
+        tours = pop.getTours()
+        for t in tours:
+            print('fitness is ', t.getFitness())
+'''
     # def elitistPreservingSelection(self):
 
 
