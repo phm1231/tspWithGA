@@ -102,9 +102,10 @@ class GA:
 
         selectedValue = random.random() * accumulatedFitness
 
-        for i in range(1, len(fitnessList) - 1):
-            if(fitnessList[i-1] <= selectedValue and selectedValue <= fitnessList[i]):
-                return pop.getTour(i)
+        for i in range(1, len(fitnessList)):
+            if(fitnessList[i-1] <= selectedValue and selectedValue < fitnessList[i]):
+                selectedTour = pop.getTour(i-1)
+                return selectedTour
 
         return pop.getFittest() # 아무튼 응급처치
 

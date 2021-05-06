@@ -23,6 +23,9 @@ class Population:
     def saveTour(self, index, tour):
         self.tours[index] = tour
 
+    def excludeTour(self, index):
+        self.tours.remove(index)
+
     def getTour(self, index):
         return self.tours[index]
 
