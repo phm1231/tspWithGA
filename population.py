@@ -38,3 +38,6 @@ class Population:
 
     def populationSize(self):
         return len(self.tours)
+
+    def resetTour(self, index):
+        self.tours[index] = None

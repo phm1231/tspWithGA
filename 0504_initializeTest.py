@@ -5,9 +5,9 @@ from population import Population
 from GA import GA
 
 if __name__ == '__main__':
-    population_size = 20
-    n_generations = 20
-
+    population_size = 10
+    n_generations = 30
+    setCnt = 300 # 자식 세대가 setCnt 만큼 진화하면서 부모보다 좋지 않은 결과를 없을 경우 종료
     seed(0)
 
     # Initialize population
@@ -18,15 +18,19 @@ if __name__ == '__main__':
     ga = GA()
 
     parentDistance = 2**31 -1
+    checkNum = 0
     for i in range(n_generations):
         print('main', i)
         pop = ga.evolvePopulation(pop)
 
         fittest = pop.getFittest()
         if parentDistance <= fittest.getDistance():
-            print('no more child')
-            break
+            checkNum += 1
+            if(checkNum >= setCnt):
+                print('no more child')
+                break
         else:
+            checkNum = 0
             parentDistance = fittest.getDistance()
 
         print('distance', fittest.getDistance())
