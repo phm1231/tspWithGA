@@ -35,4 +35,10 @@ if __name__ == '__main__':
     print("Finished")
     print("Final distance: " + str(pop.getFittest().getDistance()))
     print("Solution:")
-    print(pop.getFittest())
+    fittest = pop.getFittest()
+    print(fittest)
+
+    f = open("solution.csv", "w")
+    for i in range(len(fittest)):
+        f.write(str(fittest[i]) + '\n')
+    f.close()

@@ -22,10 +22,9 @@ class Tour:
         self.tour[key] = value
 
     def __repr__(self):
-        geneString = 'Start -> '
+        geneString = ''
         for i in range(0, self.tourSize()):
-            geneString += str(self.getCity(i)) + ' -> '
-        geneString += 'End'
+            geneString += str(self.getCity(i)) + ' '
         return geneString
 
     def generateIndividual(self):

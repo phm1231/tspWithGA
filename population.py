@@ -21,7 +21,6 @@ class Population:
         return self.tours[index]
 
     def saveTour(self, index, tour):
-        # print(tour)
         self.tours[index] = tour
 
     def getTour(self, index):
