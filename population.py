@@ -1,6 +1,5 @@
 from tour import Tour
 
-
 class Population:
     def __init__(self, populationSize, initialise):
         self.tours = []
