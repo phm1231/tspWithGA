@@ -53,13 +53,24 @@ class Tour:
         # print(temp)
         print('distance', self.getDistance())
 
+    def generateIndivisualRandomSearch(self):
+        cityLocationInfo = CityManager.getCityLocationInfo()
+        np.random.shuffle(cityLocationInfo)
+        for cityIndex, city in enumerate(cityLocationInfo):
+            self.setCity(cityIndex, city.getIndex())
+
+        print('distance', self.getDistance())
+
     def getCity(self, tour_position):
         return self.tour[tour_position]
 
-    def setCity(self, tourPosition, city):
-        self.tour[tourPosition] = city
+    def setCity(self, tourPosition, cityIndex):
+        self.tour[tourPosition] = cityIndex
         self.fitness = 0.0
         self.distance = 0
+
+    def getTour(self):
+        return self.tour
 
     def getFitness(self):
         if self.fitness == 0:
