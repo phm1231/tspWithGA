@@ -13,6 +13,9 @@ class City:
     def getY(self):
         return self.y
 
+    def getIndex(self):
+        return self.index
+
     def getLocation(self):
         return self.getX(), self.getY()
 

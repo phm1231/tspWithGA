@@ -4,18 +4,19 @@ from population import Population
 from GA import GA
 
 if __name__ == '__main__':
-    population_size = 2
-    n_generations = 100
-    setCnt = 100 # 자식 세대가 setCnt 만큼 진화하면서 부모보다 좋지 않은 결과를 없을 경우 종료
+    population_size = 100
+    n_generations = 10000
+    setCnt = 15  # 자식 세대가 setCnt 만큼 진화하면서 부모보다 좋지 않은 결과를 없을 경우 종료
     seed(0)
 
     # load the map
     map_original = cv2.imread('bg2.jpg')
+    cv2.imshow('map', map_original)
+    cv2.waitKey(0)
 
     # Initialize population
     pop = Population(populationSize=population_size, initialise=True)
     print("Initial distance: " + str(pop.getFittest().getDistance()))
-
 
     # Print city in the map
     tour = pop.getTour(0)
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     # Evolve population
     ga = GA()
 
-    parentDistance = 2**31 -1
+    parentDistance = 2 ** 31 - 1
     checkNum = 0
 
     for i in range(n_generations):
@@ -38,7 +39,7 @@ if __name__ == '__main__':
         fittest = pop.getFittest()
         if parentDistance <= fittest.getDistance():
             checkNum += 1
-            if(checkNum >= setCnt):
+            if (checkNum >= setCnt):
                 print('no more child')
                 break
         else:
@@ -52,12 +53,12 @@ if __name__ == '__main__':
     print("Final distance: " + str(pop.getFittest().getDistance()))
     print("Solution:")
     fittest = pop.getFittest()
-#   Print Line
+    #   Print Line
     map_result = map_original.copy()
 
     for j in range(1, 1000):
 
-        start_city = fittest.citymanager.getCity(fittest.getCity(j-1))
+        start_city = fittest.citymanager.getCity(fittest.getCity(j - 1))
         end_city = fittest.citymanager.getCity(fittest.getCity(j))
         cv2.line(
             map_result,
@@ -67,15 +68,17 @@ if __name__ == '__main__':
             thickness=1,
             lineType=cv2.LINE_AA
         )
-        cv2.putText(map_result, org=(1000, 25), text='Generation: %d' % (i+1), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.7, color=0, thickness=1, lineType=cv2.LINE_AA)
-        cv2.putText(map_result, org=(1000, 50), text='Distance: %.2fkm' % fittest.getDistance(), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.7, color=0, thickness=1, lineType=cv2.LINE_AA)
+        cv2.putText(map_result, org=(1000, 25), text='Generation: %d' % (i + 1), fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale=0.7, color=0, thickness=1, lineType=cv2.LINE_AA)
+        cv2.putText(map_result, org=(1000, 50), text='Distance: %.2fkm' % fittest.getDistance(),
+                    fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.7, color=0, thickness=1, lineType=cv2.LINE_AA)
         cv2.imshow('map', map_result)
 
-        if cv2.waitKey(100) == ord('q'): #주석처리 하면 애니메이션 안 기다려도 됩니다.
+        if cv2.waitKey(100) == ord('q'):  # 주석처리 하면 애니메이션 안 기다려도 됩니다.
             break
-        
+
     cv2.waitKey(0)
-#   
+    #
     print(fittest)
 
     # f = open("solution.csv", "w")

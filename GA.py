@@ -1,13 +1,14 @@
 import random
 import numpy as np
 
+import cityManager
 from population import Population
 from tour import Tour
 from cityManager import CityManager
 
 class GA:
 
-    DISTANCE_OFFSET = 52
+    DISTANCE_OFFSET = 5
 
     def __init__(self, mutationRate=0.05, tournamentSize=20, elitism=True):
         self.mutationRate = mutationRate
@@ -26,13 +27,13 @@ class GA:
 #            parent2 = self.tournamentSelection(pop)
             parent1 = self.roulletteWheelSelection(pop)
             parent2 = self.roulletteWheelSelection(pop)
-            child = self.crossover(parent1, parent2)
+            child = self.edgeRecombination(parent1, parent2)
             newPopulation.saveTour(i, child)
         for i in range(elitismOffset, newPopulation.populationSize()):
             self.mutate(newPopulation.getTour(i))
         return newPopulation
 
-    def crossover(self, parent1, parent2):
+    def Ordercrossover(self, parent1, parent2):
         child = Tour()
 
         startPos = int(random.random() * parent1.tourSize())
@@ -72,6 +73,82 @@ class GA:
                         break
         return child
 
+    def cycleCrossOver(self, parent1, parent2):
+        child = Tour()
+        childTour = child.getTour()
+        mainParent = parent1
+        subParent = parent2
+        setIndex = 0
+        while None in childTour:
+            while child[setIndex] == None:
+                city = CityManager.getCity(mainParent.getCity(setIndex))
+                child.setCity(setIndex, mainParent.getCity(setIndex))
+                setIndex = city.getIndex()
+            mainParent, subParent = subParent, mainParent
+
+            for index in range(child.tourSize()):
+                if childTour[index] == None:
+                    setIndex = index
+                    break
+
+        return child
+
+    # def edgeRecombination(self, parent1, parent2):
+    #     parent1EdgeList = {}
+    #     parent2EdgeList = {}
+    #     child = Tour()
+    #
+    #     # initailize parent1's adj list
+    #     for cityIndex, city in enumerate(parent1):
+    #         parent1EdgeList[cityIndex] = set()
+    #         if cityIndex == 0:
+    #             parent1EdgeList[cityIndex].add(city)
+    #             parent1EdgeList[cityIndex].add(parent1[-1])
+    #         elif cityIndex == CityManager.N_CITY - 1:
+    #             parent1EdgeList[cityIndex].add(parent1[cityIndex - 1])
+    #             parent1EdgeList[cityIndex].add(parent1[0])
+    #         else:
+    #             parent1EdgeList[cityIndex].add(parent1[cityIndex-1])
+    #             parent1EdgeList[cityIndex].add(parent1[cityIndex+1])
+    #
+    #     # initialize parent2 adg list
+    #     for cityIndex, city in enumerate(parent2):
+    #         parent2EdgeList[cityIndex] = set()
+    #         if cityIndex == 0:
+    #             parent2EdgeList[cityIndex].add(city)
+    #             parent2EdgeList[cityIndex].add(parent2[-1])
+    #         else:
+    #             parent2EdgeList[cityIndex].add(parent2[cityIndex - 1])
+    #             parent2EdgeList[cityIndex].add(parent2[cityIndex + 1])
+    #
+    #     # generate uni-parent adj list
+    #     parentEdgeList = {}
+    #     for cityIndex in range(CityManager.N_CITY):
+    #         parentEdgeList[cityIndex] = parent1EdgeList[cityIndex] | parent2EdgeList[cityIndex]
+    #
+    #     # start city
+    #     nextCity = random.randint(CityManager.N_CITY)
+    #
+    #     # generate child
+    #     for cityIndex in range(CityManager.N_CITY):
+    #         child.setCity(cityIndex, nextCity)
+    #         for cityIndex in range(CityManager.N_CITY):
+    #             parentEdgeList[cityIndex] - nextCity
+    #
+    #         neighborCity = parentEdgeList[nextCity]
+    #         if len(neighborCity) > 0:
+    #             fewestNeighborCity = 0
+    #             fewestNeighborCount = 2**31 - 1
+    #             for city in neighborCity:
+    #                 if parentEdgeList[city] < fewestNeighborCount:
+    #                     fewestNeighborCity = city
+    #             nextCity = fewestNeighborCity
+    #         else:
+    #             distancesFromEndCity = CityManager.getCityDistanceInfo()[neighborCity]
+    #             nextCity = distancesFromEndCity[distancesFromEndCity == distancesFromEndCity.min()]
+    #
+    #     return child
+
     def mutate(self, tour):
         for tourPos1 in range(0, tour.tourSize()):
             if random.random() < self.mutationRate:
@@ -104,8 +181,7 @@ class GA:
 
         for i in range(1, len(fitnessList)):
             if(fitnessList[i-1] <= selectedValue and selectedValue < fitnessList[i]):
-                selectedTour = pop.getTour(i-1)
-                return selectedTour
+                return pop.getTour(i-1)
 
         return pop.getFittest() # 아무튼 응급처치
 

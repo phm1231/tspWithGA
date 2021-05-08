@@ -13,7 +13,7 @@ def distance(x, y):
 
 if __name__ == '__main__':
     # 1. get solution sequence and reordering (sort from 0)
-    with open('example_solution.csv', mode='r', newline='') as solution:
+    with open('solution.csv', mode='r', newline='') as solution:
 
         # read solution sequence
         reader = csv.reader(solution)
@@ -48,6 +48,7 @@ if __name__ == '__main__':
 
         # distance calculation
         dist = distance(pos_city_1, pos_city_2)
+        print(dist)
 
         # accumulation
         total_cost += dist
