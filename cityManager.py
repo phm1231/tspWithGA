@@ -11,7 +11,6 @@ TSP.csv를 로드하기 위한 클래스
 TSP.csv 데이터가 필요한 경우 해당 클래스를 상속받아 사용
 '''
 
-
 class CityManager:
     N_CITY = 1000
     stdY = 0.0
@@ -67,7 +66,7 @@ class CityManager:
         '''
         df_distances = pd.DataFrame(self.cityDistanceInfo)
         df_distances.to_csv('Distances.csv', index=False)
-
+ 
     def setStandardIndividual(self):
         for i in range(0, self.N_CITY):
             next_city = self.getCity(i)

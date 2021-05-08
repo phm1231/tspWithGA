@@ -44,6 +44,7 @@ class Tour:
         s4 = CityManager.split4
 
         start_city_index = random.choice(s1)
+        minimum_index = 0
         visited.add(start_city_index)
         self.setCity(0, start_city_index)
         city_nth = 0
@@ -56,14 +57,20 @@ class Tour:
                 if next_city_length < minimum_distance and  next_city_index not in visited:
                     minimum_distance = next_city_length
                     minimum_index = next_city_index
-
             self.setCity(city_nth, minimum_index)
             temp += minimum_distance
             start_city_index = minimum_index
             visited.add(minimum_index)
-
+        
         city_nth = len(visited)
-        start_city_index = random.choice(s2)
+        minimum_distance = 2 ** 31 - 1
+        for next_city_index in s2:
+            next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
+            if next_city_length < minimum_distance and  next_city_index not in visited:
+                minimum_distance = next_city_length
+                minimum_index = next_city_index
+
+        start_city_index = minimum_index
         self.setCity(city_nth, start_city_index)
         visited.add(start_city_index)
 
@@ -82,7 +89,14 @@ class Tour:
             visited.add(minimum_index)
 
         city_nth = len(visited)
-        start_city_index = random.choice(s3)
+        minimum_distance = 2 ** 31 - 1
+        for next_city_index in s3:
+            next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
+            if next_city_length < minimum_distance and  next_city_index not in visited:
+                minimum_distance = next_city_length
+                minimum_index = next_city_index
+
+        start_city_index = minimum_index
         self.setCity(city_nth, start_city_index)
         visited.add(start_city_index)
 
@@ -101,7 +115,14 @@ class Tour:
             visited.add(minimum_index)
 
         city_nth = len(visited)
-        start_city_index = random.choice(s4)
+        minimum_distance = 2 ** 31 - 1
+        for next_city_index in s4:
+            next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
+            if next_city_length < minimum_distance and  next_city_index not in visited:
+                minimum_distance = next_city_length
+                minimum_index = next_city_index
+
+        start_city_index = minimum_index
         self.setCity(city_nth, start_city_index)
         visited.add(start_city_index)
 
@@ -118,7 +139,7 @@ class Tour:
             temp += minimum_distance
             start_city_index = minimum_index
             visited.add(minimum_index)
-            
+
         print('distance', self.getDistance())
 
     def getCity(self, tour_position):

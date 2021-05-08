@@ -5,15 +5,13 @@ from population import Population
 from GA import GA
 
 if __name__ == '__main__':
-    population_size = 5
-    n_generations =  5
+    population_size = 20
+    n_generations =  10
     setCnt = 300 # 자식 세대가 setCnt 만큼 진화하면서 부모보다 좋지 않은 결과를 없을 경우 종료
     seed(0)
 
     # load the map
     map_original = cv2.imread('bg2.jpg')
-    cv2.imshow('map', map_original)
-    cv2.waitKey(0)
 
     # Initialize population
     pop = Population(populationSize=population_size, initialise=True)
@@ -60,7 +58,7 @@ if __name__ == '__main__':
 #   Print Line
     map_result = map_original.copy()
 
-    for j in range(1, 1001):
+    for j in range(1, 1000):
 
         start_city = fittest.citymanager.getCity(fittest.getCity(j-1))
         end_city = fittest.citymanager.getCity(fittest.getCity(j))
