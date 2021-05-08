@@ -31,26 +31,94 @@ class Tour:
         '''
         무작위로 시작 city를 선택하여 현재 도시와 가장 가까운 도시를 다음 도시로 선택하여 경로를 생성하여 리턴하는 함수
         :return path 생성된 경로, length 생성된 경로의 길이:
+
+        4분면으로 나누어서 아직 해당 분면에 방문하지 않은 점이 있으면 방문하도록 재설정(점프 방지)
         '''
         visited = set()
-        start_city_index = np.random.randint(0, CityManager.N_CITY)
+        temp = 0
+        splitcnt = 0
+
+        s1 = CityManager.split1
+        s2 = CityManager.split2
+        s3 = CityManager.split3
+        s4 = CityManager.split4
+
+        start_city_index = random.choice(s1)
         visited.add(start_city_index)
         self.setCity(0, start_city_index)
-        temp = 0
-        while len(visited) < 1000:
+        city_nth = 0
+
+        while(len(visited) < len(s1)):
             minimum_distance = 2 ** 31 - 1
             city_nth = len(visited)
-            # print(city_nth)
-            for next_city_index in range(CityManager.N_CITY):
+            for next_city_index in s1:
                 next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
                 if next_city_length < minimum_distance and  next_city_index not in visited:
                     minimum_distance = next_city_length
                     minimum_index = next_city_index
+
             self.setCity(city_nth, minimum_index)
             temp += minimum_distance
             start_city_index = minimum_index
             visited.add(minimum_index)
-        # print(temp)
+
+        city_nth = len(visited)
+        start_city_index = random.choice(s2)
+        self.setCity(city_nth, start_city_index)
+        visited.add(start_city_index)
+
+        while(len(visited) < len(s1) + len(s2)):
+            minimum_distance = 2 ** 31 - 1
+            city_nth = len(visited)
+            for next_city_index in s2:
+                next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
+                if next_city_length < minimum_distance and  next_city_index not in visited:
+                    minimum_distance = next_city_length
+                    minimum_index = next_city_index
+
+            self.setCity(city_nth, minimum_index)
+            temp += minimum_distance
+            start_city_index = minimum_index
+            visited.add(minimum_index)
+
+        city_nth = len(visited)
+        start_city_index = random.choice(s3)
+        self.setCity(city_nth, start_city_index)
+        visited.add(start_city_index)
+
+        while(len(visited) < len(s1) + len(s2) + len(s3)):
+            minimum_distance = 2 ** 31 - 1
+            city_nth = len(visited)
+            for next_city_index in s3:
+                next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
+                if next_city_length < minimum_distance and  next_city_index not in visited:
+                    minimum_distance = next_city_length
+                    minimum_index = next_city_index
+
+            self.setCity(city_nth, minimum_index)
+            temp += minimum_distance
+            start_city_index = minimum_index
+            visited.add(minimum_index)
+
+        city_nth = len(visited)
+        start_city_index = random.choice(s4)
+        self.setCity(city_nth, start_city_index)
+        visited.add(start_city_index)
+
+        while(len(visited) < len(s1) + len(s2) + len(s3) + len(s4)):
+            minimum_distance = 2 ** 31 - 1
+            city_nth = len(visited)
+            for next_city_index in s4:
+                next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
+                if next_city_length < minimum_distance and  next_city_index not in visited:
+                    minimum_distance = next_city_length
+                    minimum_index = next_city_index
+
+            self.setCity(city_nth, minimum_index)
+            temp += minimum_distance
+            start_city_index = minimum_index
+            visited.add(minimum_index)
+            
         print('distance', self.getDistance())
 
     def getCity(self, tour_position):
@@ -69,7 +137,6 @@ class Tour:
     def getDistance(self):
         if self.distance == 0:
             tourDistance = 0
-            # print(self.tour)
             for cityIndex in range(0, self.tourSize()):
                 fromCity = self.getCity(cityIndex)
                 destinationCity = None
@@ -86,3 +153,6 @@ class Tour:
 
     def containsCity(self, city):
         return city in self.tour
+
+    def addCity(self, city):
+        tour.append(city)
