@@ -17,7 +17,7 @@ if __name__ == '__main__':
     # Initialize population
     pop = Population(populationSize=population_size, initialise=True)
     print("Initial distance: " + str(pop.getFittest().getDistance()))
-    
+
     # Print city in the map
     tour = pop.getTour(0)
     for i in range(0, len(tour)):
@@ -85,7 +85,7 @@ if __name__ == '__main__':
             lineType=cv2.LINE_AA
         )
         cv2.putText(map_result, org=(1000, 25), text='Generation: %d' % (n_generations), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.7, color=0, thickness=1, lineType=cv2.LINE_AA)
-        cv2.putText(map_result, org=(1000, 50), text='Distance: %.2fkm' % fittest.getDistance(), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.7, color=0, thickness=1, lineType=cv2.LINE_AA)
+        cv2.putText(map_result, org=(1000, 50), text='Distance: %.15fkm' % fittest.getDistance(), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.7, color=0, thickness=1, lineType=cv2.LINE_AA)
         cv2.imshow('map', map_result)
 
         if cv2.waitKey(10) == ord('q'): # 주석처리 하면 애니메이션 안 기다려도 됩니다.

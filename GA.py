@@ -27,8 +27,8 @@ class GA:
 #            parent1 = self.roulletteWheelSelection(pop)
 #            parent2 = self.roulletteWheelSelection(pop)
             child = self.crossover(parent1, parent2)
-            #child = self.(parent1, parent2)
-            #child = self.edgeRecombination(parent1, parent2)
+            #child = self.cycleCrossOver(parent1, parent2)
+            #child = self.Ordercrossover(parent1, parent2)
             #child = self.edgeRecombination(parent1, parent2)
             #cycleCrossOver
             #crossoverSimple
