@@ -23,10 +23,10 @@ class GA:
             elitismOffset = 1
         
         for i in range(elitismOffset, newPopulation.populationSize()):
-#            parent1 = self.tournamentSelection(pop)
-#            parent2 = self.tournamentSelection(pop)
-            parent1 = self.roulletteWheelSelection(pop)
-            parent2 = self.roulletteWheelSelection(pop)
+            parent1 = self.tournamentSelection(pop)
+            parent2 = self.tournamentSelection(pop)
+            # parent1 = self.roulletteWheelSelection(pop)
+            # parent2 = self.roulletteWheelSelection(pop)
             child = self.edgeRecombination(parent1, parent2)
             newPopulation.saveTour(i, child)
         for i in range(elitismOffset, newPopulation.populationSize()):
@@ -93,61 +93,64 @@ class GA:
 
         return child
 
-    # def edgeRecombination(self, parent1, parent2):
-    #     parent1EdgeList = {}
-    #     parent2EdgeList = {}
-    #     child = Tour()
-    #
-    #     # initailize parent1's adj list
-    #     for cityIndex, city in enumerate(parent1):
-    #         parent1EdgeList[cityIndex] = set()
-    #         if cityIndex == 0:
-    #             parent1EdgeList[cityIndex].add(city)
-    #             parent1EdgeList[cityIndex].add(parent1[-1])
-    #         elif cityIndex == CityManager.N_CITY - 1:
-    #             parent1EdgeList[cityIndex].add(parent1[cityIndex - 1])
-    #             parent1EdgeList[cityIndex].add(parent1[0])
-    #         else:
-    #             parent1EdgeList[cityIndex].add(parent1[cityIndex-1])
-    #             parent1EdgeList[cityIndex].add(parent1[cityIndex+1])
-    #
-    #     # initialize parent2 adg list
-    #     for cityIndex, city in enumerate(parent2):
-    #         parent2EdgeList[cityIndex] = set()
-    #         if cityIndex == 0:
-    #             parent2EdgeList[cityIndex].add(city)
-    #             parent2EdgeList[cityIndex].add(parent2[-1])
-    #         else:
-    #             parent2EdgeList[cityIndex].add(parent2[cityIndex - 1])
-    #             parent2EdgeList[cityIndex].add(parent2[cityIndex + 1])
-    #
-    #     # generate uni-parent adj list
-    #     parentEdgeList = {}
-    #     for cityIndex in range(CityManager.N_CITY):
-    #         parentEdgeList[cityIndex] = parent1EdgeList[cityIndex] | parent2EdgeList[cityIndex]
-    #
-    #     # start city
-    #     nextCity = random.randint(CityManager.N_CITY)
-    #
-    #     # generate child
-    #     for cityIndex in range(CityManager.N_CITY):
-    #         child.setCity(cityIndex, nextCity)
-    #         for cityIndex in range(CityManager.N_CITY):
-    #             parentEdgeList[cityIndex] - nextCity
-    #
-    #         neighborCity = parentEdgeList[nextCity]
-    #         if len(neighborCity) > 0:
-    #             fewestNeighborCity = 0
-    #             fewestNeighborCount = 2**31 - 1
-    #             for city in neighborCity:
-    #                 if parentEdgeList[city] < fewestNeighborCount:
-    #                     fewestNeighborCity = city
-    #             nextCity = fewestNeighborCity
-    #         else:
-    #             distancesFromEndCity = CityManager.getCityDistanceInfo()[neighborCity]
-    #             nextCity = distancesFromEndCity[distancesFromEndCity == distancesFromEndCity.min()]
-    #
-    #     return child
+    def edgeRecombination(self, parent1, parent2):
+        parent1EdgeList = {}
+        parent2EdgeList = {}
+        child = Tour()
+
+        # initailize parent1's adj list
+        for cityIndex, city in enumerate(parent1):
+            parent1EdgeList[cityIndex] = set()
+            if cityIndex == 0:
+                parent1EdgeList[cityIndex].add(city)
+                parent1EdgeList[cityIndex].add(parent1[-1])
+            elif cityIndex == CityManager.N_CITY - 1:
+                parent1EdgeList[cityIndex].add(parent1[cityIndex - 1])
+                parent1EdgeList[cityIndex].add(parent1[0])
+            else:
+                parent1EdgeList[cityIndex].add(parent1[cityIndex-1])
+                parent1EdgeList[cityIndex].add(parent1[cityIndex+1])
+
+        # initialize parent2 adg list
+        for cityIndex, city in enumerate(parent2):
+            parent2EdgeList[cityIndex] = set()
+            if cityIndex == 0:
+                parent2EdgeList[cityIndex].add(city)
+                parent2EdgeList[cityIndex].add(parent2[-1])
+            elif cityIndex == CityManager.N_CITY - 1:
+                parent2EdgeList[cityIndex].add(parent2[cityIndex - 1])
+                parent2EdgeList[cityIndex].add(parent2[0])
+            else:
+                parent2EdgeList[cityIndex].add(parent2[cityIndex - 1])
+                parent2EdgeList[cityIndex].add(parent2[cityIndex + 1])
+
+        # generate uni-parent adj list
+        parentEdgeList = {}
+        for cityIndex in range(CityManager.N_CITY):
+            parentEdgeList[cityIndex] = parent1EdgeList[cityIndex] | parent2EdgeList[cityIndex]
+
+        # start city
+        nextCity = random.randint(0, CityManager.N_CITY-1)
+
+        # generate child
+        for cityIndex in range(CityManager.N_CITY):
+            child.setCity(cityIndex, nextCity)
+            for cityIndex in range(CityManager.N_CITY):
+                parentEdgeList[cityIndex] = parentEdgeList[cityIndex] - {nextCity}
+
+            neighborCities = parentEdgeList[nextCity]
+            if len(neighborCities) > 0:
+                fewestNeighborCity = 0
+                fewestNeighborCount = 2**31 - 1
+                for city in neighborCities:
+                    if len(parentEdgeList[city]) < fewestNeighborCount:
+                        fewestNeighborCity = city
+                nextCity = fewestNeighborCity
+            else:
+                distancesFromEndCity = (CityManager.getCityDistanceInfo())[nextCity]
+                nextCity = int((distancesFromEndCity.argsort())[1])
+
+        return child
 
     def mutate(self, tour):
         for tourPos1 in range(0, tour.tourSize()):
