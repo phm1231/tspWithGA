@@ -101,29 +101,29 @@ class GA:
 
         # initailize parent1's adj list
         for cityIndex, city in enumerate(parent1):
-            parent1EdgeList[cityIndex] = set()
+            parent1EdgeList[city] = set()
             if cityIndex == 0:
-                parent1EdgeList[cityIndex].add(city)
-                parent1EdgeList[cityIndex].add(parent1[-1])
+                parent1EdgeList[city].add(parent1[cityIndex+1])
+                parent1EdgeList[city].add(parent1[-1])
             elif cityIndex == CityManager.N_CITY - 1:
-                parent1EdgeList[cityIndex].add(parent1[cityIndex - 1])
-                parent1EdgeList[cityIndex].add(parent1[0])
+                parent1EdgeList[city].add(parent1[cityIndex - 1])
+                parent1EdgeList[city].add(parent1[0])
             else:
-                parent1EdgeList[cityIndex].add(parent1[cityIndex-1])
-                parent1EdgeList[cityIndex].add(parent1[cityIndex+1])
+                parent1EdgeList[city].add(parent1[cityIndex-1])
+                parent1EdgeList[city].add(parent1[cityIndex+1])
 
         # initialize parent2 adg list
         for cityIndex, city in enumerate(parent2):
-            parent2EdgeList[cityIndex] = set()
+            parent2EdgeList[city] = set()
             if cityIndex == 0:
-                parent2EdgeList[cityIndex].add(city)
-                parent2EdgeList[cityIndex].add(parent2[-1])
+                parent2EdgeList[city].add(parent2[cityIndex + 1])
+                parent2EdgeList[city].add(parent2[-1])
             elif cityIndex == CityManager.N_CITY - 1:
-                parent2EdgeList[cityIndex].add(parent2[cityIndex - 1])
-                parent2EdgeList[cityIndex].add(parent2[0])
+                parent2EdgeList[city].add(parent2[cityIndex - 1])
+                parent2EdgeList[city].add(parent2[0])
             else:
-                parent2EdgeList[cityIndex].add(parent2[cityIndex - 1])
-                parent2EdgeList[cityIndex].add(parent2[cityIndex + 1])
+                parent2EdgeList[city].add(parent2[cityIndex - 1])
+                parent2EdgeList[city].add(parent2[cityIndex + 1])
 
         # generate uni-parent adj list
         parentEdgeList = {}
@@ -155,6 +155,7 @@ class GA:
                     if index not in visited:
                         nextCity = int(sortedIndexByDistance[index])
 
+        print('child distance : ', child.getDistance())
         return child
 
     def mutate(self, tour):
