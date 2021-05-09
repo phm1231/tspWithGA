@@ -26,7 +26,10 @@ class GA:
             parent2 = self.tournamentSelection(pop)
 #            parent1 = self.roulletteWheelSelection(pop)
 #            parent2 = self.roulletteWheelSelection(pop)
-            child = self.edgeRecombination(parent1, parent2)
+            child = self.crossover(parent1, parent2)
+            #child = self.(parent1, parent2)
+            #child = self.edgeRecombination(parent1, parent2)
+            #child = self.edgeRecombination(parent1, parent2)
             #cycleCrossOver
             #crossoverSimple
             #Ordercrossover
@@ -215,7 +218,7 @@ class GA:
                         nextCity = index
                         break
         # print('child len', len(set(child)))
-        print('child distance : ', child.getDistance())
+#        print('child distance : ', child.getDistance())
         return child
 
 '''

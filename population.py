@@ -11,7 +11,7 @@ class Population:
             for i in range(0, populationSize):
                 print('population', i)
                 newTour = Tour()
-                newTour.generateIndividual()
+                newTour.generateIndividualRandom()
                 self.saveTour(i, newTour)
 
     def __setitem__(self, key, value):

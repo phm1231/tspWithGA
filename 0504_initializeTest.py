@@ -6,8 +6,8 @@ from GA import GA
 from cityManager import CityManager
 
 if __name__ == '__main__':
-    population_size = 10
-    n_generations =  3
+    population_size = 100
+    n_generations =  10
     setCnt = 300 # 자식 세대가 setCnt 만큼 진화하면서 부모보다 좋지 않은 결과를 없을 경우 종료
     seed(0)
 
@@ -17,8 +17,7 @@ if __name__ == '__main__':
     # Initialize population
     pop = Population(populationSize=population_size, initialise=True)
     print("Initial distance: " + str(pop.getFittest().getDistance()))
-
-
+    
     # Print city in the map
     tour = pop.getTour(0)
     for i in range(0, len(tour)):

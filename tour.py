@@ -25,6 +25,12 @@ class Tour:
             geneString += str(self.getCity(i)) + ' '
         return geneString
 
+    def generateIndividualRandom(self):
+        for cityIndex in range(0, 1000):
+            self.setCity(cityIndex, cityIndex)
+        random.shuffle(self.tour)
+        print('distance', self.getDistance())
+
     def generateIndividual(self): # 그리디
         '''
         무작위로 시작 city를 선택하여 현재 도시와 가장 가까운 도시를 다음 도시로 선택하여 경로를 생성하여 리턴하는 함수
