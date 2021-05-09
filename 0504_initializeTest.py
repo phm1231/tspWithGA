@@ -4,7 +4,7 @@ from population import Population
 from GA import GA
 
 if __name__ == '__main__':
-    population_size = 50
+    population_size = 30
     n_generations = 10
     setCnt = 100 # 자식 세대가 setCnt 만큼 진화하면서 부모보다 좋지 않은 결과를 없을 경우 종료
     seed(0)

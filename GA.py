@@ -125,11 +125,13 @@ class GA:
                 parent2EdgeList[city].add(parent2[cityIndex - 1])
                 parent2EdgeList[city].add(parent2[cityIndex + 1])
 
+        # print(len(parent1EdgeList))
+        # print(len(parent2EdgeList))
         # generate uni-parent adj list
         parentEdgeList = {}
         for cityIndex in range(CityManager.N_CITY):
             parentEdgeList[cityIndex] = parent1EdgeList[cityIndex] | parent2EdgeList[cityIndex]
-
+        # print(len(parentEdgeList))
         # start city
         nextCity = parent1.getCity(0)
 
@@ -137,15 +139,14 @@ class GA:
         for cityIndex in range(CityManager.N_CITY):
             child.setCity(cityIndex, nextCity)
             visited.add(nextCity)
-            for cityIndex in range(CityManager.N_CITY):
-                parentEdgeList[cityIndex] = parentEdgeList[cityIndex] - {nextCity}
+            for otherCity in range(CityManager.N_CITY):
+                parentEdgeList[otherCity] = parentEdgeList[otherCity] - {nextCity}
 
             neighborCities = parentEdgeList[nextCity]
             if len(neighborCities) > 0:
-                fewestNeighborCity = 0
                 fewestNeighborCount = 2**31 - 1
                 for city in neighborCities:
-                    if len(parentEdgeList[city]) < fewestNeighborCount:
+                    if city not in visited and len(parentEdgeList[city]) < fewestNeighborCount:
                         fewestNeighborCity = city
                 nextCity = fewestNeighborCity
             else:
@@ -153,8 +154,9 @@ class GA:
                 sortedIndexByDistance = distancesFromEndCity.argsort()
                 for index in sortedIndexByDistance:
                     if index not in visited:
-                        nextCity = int(sortedIndexByDistance[index])
-
+                        nextCity = index
+                        break
+        # print('child len', len(set(child)))
         print('child distance : ', child.getDistance())
         return child
 
@@ -211,9 +213,3 @@ class GA:
             print('fitness is ', t.getFitness())
 '''
     # def elitistPreservingSelection(self):
-
-
-
-
-
-
