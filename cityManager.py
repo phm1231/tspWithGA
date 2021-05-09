@@ -15,8 +15,14 @@ class CityManager:
     N_CITY = 1000
     stdY = 0.0
     stdX = 0.0
+    stdY2 = []
+    stdX2 = []
+    stdY3 = []
+    stdX3 = []
+
     split = []
     split2 = []
+    split3 = []
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):
@@ -41,7 +47,8 @@ class CityManager:
         self.setStandard()
         self.setStandardIndividual()
         self.makeSplit2()
-        
+        self.makeSplit3()
+
     def getCityLocationInfo(self):
         '''
         :return: cityLocations : city의 위치정보를 저장한 numpy 2차 배열
@@ -102,14 +109,13 @@ class CityManager:
         CityManager.stdY = sumY / CityManager.N_CITY
         CityManager.stdX = sumX / CityManager.N_CITY
 
-
     def makeSplit2(self):
         for i in range (0, 4):
             sumX = 0.0
             sumY = 0.0
             origin_split = CityManager.split[i]
             for j in range(0, len(origin_split)):
-                loc = self.getCity(origin_split[i])
+                loc = self.getCity(origin_split[j])
                 sumY += loc.getY()
                 sumX += loc.getX()
 
@@ -119,6 +125,9 @@ class CityManager:
             s4 = []
             stdY = sumY / len(origin_split)
             stdX = sumX / len(origin_split)
+            CityManager.stdY2.append(stdY)
+            CityManager.stdX2.append(stdX)
+
             print(i, ' ', stdX, ' ', stdY)
             for j in range(0, len(origin_split)):
                 city = self.getCity(origin_split[j])
@@ -137,6 +146,43 @@ class CityManager:
             CityManager.split2.append(s2)
             CityManager.split2.append(s3)
             CityManager.split2.append(s4)
+
+    def makeSplit3(self):
+        for i in range (0, 4):
+            for j in range (0, 4):
+                sumX = 0.0
+                sumY = 0.0
+                origin_split = CityManager.split2[4*i + j]
+                for k in range(0, len(origin_split)):
+                    loc = self.getCity(origin_split[k])
+                    sumY += loc.getY()
+                    sumX += loc.getX()
+                s1 = []
+                s2 = []
+                s3 = []
+                s4 = []
+                stdY = sumY / len(origin_split)
+                stdX = sumX / len(origin_split)
+                CityManager.stdY3.append(stdY)
+                CityManager.stdX3.append(stdX)
+
+                for k in range(0, len(origin_split)):
+                    city = self.getCity(origin_split[k])
+                    x = city.getX()
+                    y = city.getY()
+                    if(x < stdX and y < stdY):
+                        s1.append(origin_split[k])
+                    elif(x > stdX and y < stdY):
+                        s2.append(origin_split[k])
+                    elif(x <= stdX and y >= stdY):
+                        s3.append(origin_split[k])
+                    elif(x >= stdX and y >= stdY):
+                        s4.append(origin_split[k])
+
+                CityManager.split3.append(s1)
+                CityManager.split3.append(s2)
+                CityManager.split3.append(s3)
+                CityManager.split3.append(s4)
 
 if __name__ == '__main__':
     a = CityManager()

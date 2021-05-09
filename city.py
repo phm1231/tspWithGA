@@ -25,3 +25,6 @@ class City:
 
     def getSplit(self):
         return self.split
+
+    def getIndex(self):
+        return self.index

@@ -1,4 +1,5 @@
 from tour import Tour
+import random
 
 class Population:
     def __init__(self, populationSize, initialise):
@@ -10,7 +11,7 @@ class Population:
             for i in range(0, populationSize):
                 print('population', i)
                 newTour = Tour()
-                newTour.generateIndividual2()
+                newTour.generateIndividual()
                 self.saveTour(i, newTour)
 
     def __setitem__(self, key, value):

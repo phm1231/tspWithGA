@@ -3,10 +3,11 @@ import cv2
 from random import seed
 from population import Population
 from GA import GA
+from cityManager import CityManager
 
 if __name__ == '__main__':
-    population_size = 100
-    n_generations =  10
+    population_size = 10
+    n_generations =  3
     setCnt = 300 # 자식 세대가 setCnt 만큼 진화하면서 부모보다 좋지 않은 결과를 없을 경우 종료
     seed(0)
 
@@ -54,6 +55,17 @@ if __name__ == '__main__':
     print("Solution:")
     fittest = pop.getFittest()
 #    fittest.addCity(fittest.citymanager.getCity(0))
+
+#   print stdX, Y in the map
+    x = int(CityManager.stdX * 10)
+    y = int(CityManager.stdY * 10)
+    cv2.circle(map_original, center=(x, y), radius=5, color=(255, 0, 0), thickness=-1, lineType=cv2.LINE_AA)
+
+    for i in range(0, len(CityManager.stdY3)):
+        x = int(CityManager.stdX3[i] * 10)
+        y = int(CityManager.stdY3[i] * 10)
+        cv2.circle(map_original, center=(x, y), radius=5, color=(0, 255, 0), thickness=-1, lineType=cv2.LINE_AA)
+
 
 #   Print Line
     map_result = map_original.copy()

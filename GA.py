@@ -22,11 +22,14 @@ class GA:
             elitismOffset = 1
         
         for i in range(elitismOffset, newPopulation.populationSize()):
-#            parent1 = self.tournamentSelection(pop)
-#            parent2 = self.tournamentSelection(pop)
-            parent1 = self.roulletteWheelSelection(pop)
-            parent2 = self.roulletteWheelSelection(pop)
-            child = self.crossover(parent1, parent2)
+            parent1 = self.tournamentSelection(pop)
+            parent2 = self.tournamentSelection(pop)
+#            parent1 = self.roulletteWheelSelection(pop)
+#            parent2 = self.roulletteWheelSelection(pop)
+            child = self.edgeRecombination(parent1, parent2)
+            #cycleCrossOver
+            #crossoverSimple
+            #Ordercrossover
             newPopulation.saveTour(i, child)
         for i in range(elitismOffset, newPopulation.populationSize()):
             self.mutate(newPopulation.getTour(i))
@@ -34,7 +37,6 @@ class GA:
 
     def crossover(self, parent1, parent2):
         child = Tour()
-
         startPos = int(random.random() * parent1.tourSize())
         endPos = int(random.random() * parent1.tourSize())
 
@@ -109,7 +111,112 @@ class GA:
 
         return pop.getFittest() # 아무튼 응급처치
 
+    def Ordercrossover(self, parent1, parent2):
+        child = Tour()
 
+        startPos = int(random.random() * parent1.tourSize())
+        endPos = int(random.random() * parent1.tourSize())
+
+        for i in range(0, child.tourSize()):
+            if startPos < endPos and i > startPos and i < endPos:
+                child.setCity(i, parent1.getCity(i))
+            elif startPos > endPos:
+                if not (i < startPos and i > endPos):
+                    child.setCity(i, parent1.getCity(i))
+        for i in range(0, parent2.tourSize()):
+            if not child.containsCity(parent2.getCity(i)):
+                for ii in range(0, child.tourSize()):
+                    if child.getCity(ii) == None:
+                        child.setCity(ii, parent2.getCity(i))
+                        break
+        return child
+
+    def cycleCrossOver(self, parent1, parent2):
+        child = Tour()
+        childTour = child.getTour()
+        mainParent = parent1
+        subParent = parent2
+        setIndex = 0
+        while None in childTour:
+            while child[setIndex] == None:
+                city = CityManager.getCity(mainParent.getCity(setIndex))
+                child.setCity(setIndex, mainParent.getCity(setIndex))
+                setIndex = city.getIndex()
+            mainParent, subParent = subParent, mainParent
+
+            for index in range(child.tourSize()):
+                if childTour[index] == None:
+                    setIndex = index
+                    break
+
+        return child
+
+    def edgeRecombination(self, parent1, parent2):
+        parent1EdgeList = {}
+        parent2EdgeList = {}
+        child = Tour()
+        visited = set()
+
+        # initailize parent1's adj list
+        for cityIndex, city in enumerate(parent1):
+            parent1EdgeList[city] = set()
+            if cityIndex == 0:
+                parent1EdgeList[city].add(parent1[cityIndex+1])
+                parent1EdgeList[city].add(parent1[-1])
+            elif cityIndex == CityManager.N_CITY - 1:
+                parent1EdgeList[city].add(parent1[cityIndex - 1])
+                parent1EdgeList[city].add(parent1[0])
+            else:
+                parent1EdgeList[city].add(parent1[cityIndex-1])
+                parent1EdgeList[city].add(parent1[cityIndex+1])
+
+        # initialize parent2 adg list
+        for cityIndex, city in enumerate(parent2):
+            parent2EdgeList[city] = set()
+            if cityIndex == 0:
+                parent2EdgeList[city].add(parent2[cityIndex + 1])
+                parent2EdgeList[city].add(parent2[-1])
+            elif cityIndex == CityManager.N_CITY - 1:
+                parent2EdgeList[city].add(parent2[cityIndex - 1])
+                parent2EdgeList[city].add(parent2[0])
+            else:
+                parent2EdgeList[city].add(parent2[cityIndex - 1])
+                parent2EdgeList[city].add(parent2[cityIndex + 1])
+
+        # print(len(parent1EdgeList))
+        # print(len(parent2EdgeList))
+        # generate uni-parent adj list
+        parentEdgeList = {}
+        for cityIndex in range(CityManager.N_CITY):
+            parentEdgeList[cityIndex] = parent1EdgeList[cityIndex] | parent2EdgeList[cityIndex]
+        # print(len(parentEdgeList))
+        # start city
+        nextCity = parent1.getCity(0)
+
+        # generate child
+        for cityIndex in range(CityManager.N_CITY):
+            child.setCity(cityIndex, nextCity)
+            visited.add(nextCity)
+            for otherCity in range(CityManager.N_CITY):
+                parentEdgeList[otherCity] = parentEdgeList[otherCity] - {nextCity}
+
+            neighborCities = parentEdgeList[nextCity]
+            if len(neighborCities) > 0:
+                fewestNeighborCount = 2**31 - 1
+                for city in neighborCities:
+                    if city not in visited and len(parentEdgeList[city]) < fewestNeighborCount:
+                        fewestNeighborCity = city
+                nextCity = fewestNeighborCity
+            else:
+                distancesFromEndCity = (CityManager.getCityDistanceInfo())[nextCity]
+                sortedIndexByDistance = distancesFromEndCity.argsort()
+                for index in sortedIndexByDistance:
+                    if index not in visited:
+                        nextCity = index
+                        break
+        # print('child len', len(set(child)))
+        print('child distance : ', child.getDistance())
+        return child
 
 '''
         populationSize = pop.populationSize()
