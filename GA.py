@@ -97,6 +97,7 @@ class GA:
         parent1EdgeList = {}
         parent2EdgeList = {}
         child = Tour()
+        visited = set()
 
         # initailize parent1's adj list
         for cityIndex, city in enumerate(parent1):
@@ -130,11 +131,12 @@ class GA:
             parentEdgeList[cityIndex] = parent1EdgeList[cityIndex] | parent2EdgeList[cityIndex]
 
         # start city
-        nextCity = random.randint(0, CityManager.N_CITY-1)
+        nextCity = parent1.getCity(0)
 
         # generate child
         for cityIndex in range(CityManager.N_CITY):
             child.setCity(cityIndex, nextCity)
+            visited.add(nextCity)
             for cityIndex in range(CityManager.N_CITY):
                 parentEdgeList[cityIndex] = parentEdgeList[cityIndex] - {nextCity}
 
@@ -148,7 +150,10 @@ class GA:
                 nextCity = fewestNeighborCity
             else:
                 distancesFromEndCity = (CityManager.getCityDistanceInfo())[nextCity]
-                nextCity = int((distancesFromEndCity.argsort())[1])
+                sortedIndexByDistance = distancesFromEndCity.argsort()
+                for index in sortedIndexByDistance:
+                    if index not in visited:
+                        nextCity = int(sortedIndexByDistance[index])
 
         return child
 

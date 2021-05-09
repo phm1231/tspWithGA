@@ -5,7 +5,7 @@ from GA import GA
 
 if __name__ == '__main__':
     population_size = 100
-    n_generations = 3
+    n_generations = 5
     setCnt = 100 # 자식 세대가 setCnt 만큼 진화하면서 부모보다 좋지 않은 결과를 없을 경우 종료
     seed(0)
 
@@ -39,7 +39,6 @@ if __name__ == '__main__':
         if parentDistance <= fittest.getDistance():
             checkNum += 1
             if(checkNum >= setCnt):
-                print('child : ', fittest.getDistance())
                 print('no more child')
                 break
         else:
