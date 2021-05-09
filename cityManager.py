@@ -15,11 +15,8 @@ class CityManager:
     N_CITY = 1000
     stdY = 0.0
     stdX = 0.0
-
-    split1 = []
+    split = []
     split2 = []
-    split3 = []
-    split4 = []
 
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, 'instance'):
@@ -43,7 +40,8 @@ class CityManager:
         self.cityDistanceInfo = np.array(distances)
         self.setStandard()
         self.setStandardIndividual()
-
+        self.makeSplit2()
+        
     def getCityLocationInfo(self):
         '''
         :return: cityLocations : city의 위치정보를 저장한 numpy 2차 배열
@@ -68,35 +66,30 @@ class CityManager:
         df_distances.to_csv('Distances.csv', index=False)
  
     def setStandardIndividual(self):
+        stdY = CityManager.stdY
+        stdX = CityManager.stdX
+        split1 = []
+        split2 = []
+        split3 = []
+        split4 = []
+
         for i in range(0, self.N_CITY):
             next_city = self.getCity(i)
             x = next_city.getX()
             y = next_city.getY()
-            stdY = CityManager.stdY
-            stdX = CityManager.stdX
-            split = 0
             if(x < stdX and y < stdY):
-                CityManager.split1.append(i)
+                split1.append(i)
             elif(x > stdX and y < stdY):
-                CityManager.split2.append(i)
+                split2.append(i)
             elif(x <= stdX and y >= stdY):
-                CityManager.split3.append(i)
+                split3.append(i)
             elif(x >= stdX and y >= stdY):
-                CityManager.split4.append(i)
+                split4.append(i)
 
-    def getSplitNum(self, index):
-        for i in CityManager.split1:
-            if(i == index):
-                return 1
-        for i in CityManager.split2:
-            if(i == index):
-                return 2
-        for i in CityManager.split3:
-            if(i == index):
-                return 3
-        for i in CityManager.split4:
-            if(i == index):
-                return 4
+        CityManager.split.append(split1)
+        CityManager.split.append(split2)
+        CityManager.split.append(split3)
+        CityManager.split.append(split4)
 
     def setStandard(self):
         sumY = 0.0
@@ -109,10 +102,41 @@ class CityManager:
         CityManager.stdY = sumY / CityManager.N_CITY
         CityManager.stdX = sumX / CityManager.N_CITY
 
-    def checkGetCity(self):
-        print('checkGetCity : ', self.getCity(0))
-        print('type : ', type(self.getCity(0)))
 
+    def makeSplit2(self):
+        for i in range (0, 4):
+            sumX = 0.0
+            sumY = 0.0
+            origin_split = CityManager.split[i]
+            for j in range(0, len(origin_split)):
+                loc = self.getCity(origin_split[i])
+                sumY += loc.getY()
+                sumX += loc.getX()
+
+            s1 = []
+            s2 = []
+            s3 = []
+            s4 = []
+            stdY = sumY / len(origin_split)
+            stdX = sumX / len(origin_split)
+            print(i, ' ', stdX, ' ', stdY)
+            for j in range(0, len(origin_split)):
+                city = self.getCity(origin_split[j])
+                x = city.getX()
+                y = city.getY()
+                if(x < stdX and y < stdY):
+                    s1.append(origin_split[j])
+                elif(x > stdX and y < stdY):
+                    s2.append(origin_split[j])
+                elif(x <= stdX and y >= stdY):
+                    s3.append(origin_split[j])
+                elif(x >= stdX and y >= stdY):
+                    s4.append(origin_split[j])
+
+            CityManager.split2.append(s1)
+            CityManager.split2.append(s2)
+            CityManager.split2.append(s3)
+            CityManager.split2.append(s4)
 
 if __name__ == '__main__':
     a = CityManager()
