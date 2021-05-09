@@ -54,7 +54,6 @@ if __name__ == '__main__':
     print("Final distance: " + str(pop.getFittest().getDistance()))
     print("Solution:")
     fittest = pop.getFittest()
-#    fittest.addCity(fittest.citymanager.getCity(0))
 
 #   print stdX, Y in the map
     x = int(CityManager.stdX * 10)
@@ -70,10 +69,14 @@ if __name__ == '__main__':
 #   Print Line
     map_result = map_original.copy()
 
-    for j in range(1, 1000):
+    for j in range(1, 1001):
 
         start_city = fittest.citymanager.getCity(fittest.getCity(j-1))
-        end_city = fittest.citymanager.getCity(fittest.getCity(j))
+        if j == 1000:
+            end_city = fittest.citymanager.getCity(fittest.getCity(0))
+        else:
+            end_city = fittest.citymanager.getCity(fittest.getCity(j))
+
         cv2.line(
             map_result,
             pt1=(int(start_city.getX() * 10), int(start_city.getY() * 10)),
@@ -82,17 +85,16 @@ if __name__ == '__main__':
             thickness=1,
             lineType=cv2.LINE_AA
         )
-        cv2.putText(map_result, org=(1000, 25), text='Generation: %d' % (i+1), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.7, color=0, thickness=1, lineType=cv2.LINE_AA)
+        cv2.putText(map_result, org=(1000, 25), text='Generation: %d' % (n_generations), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.7, color=0, thickness=1, lineType=cv2.LINE_AA)
         cv2.putText(map_result, org=(1000, 50), text='Distance: %.2fkm' % fittest.getDistance(), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.7, color=0, thickness=1, lineType=cv2.LINE_AA)
         cv2.imshow('map', map_result)
 
-        if cv2.waitKey(50) == ord('q'): # 주석처리 하면 애니메이션 안 기다려도 됩니다.
+        if cv2.waitKey(10) == ord('q'): # 주석처리 하면 애니메이션 안 기다려도 됩니다.
             break
         
     cv2.waitKey(0)
 #   
     print(fittest)
-    print(fittest.citymanager.checkGetCity())
 
     f = open("solution.csv", "w")
     for i in range(len(fittest)):
