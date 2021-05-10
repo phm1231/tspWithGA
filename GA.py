@@ -24,15 +24,11 @@ class GA:
         for i in range(elitismOffset, newPopulation.populationSize()):
             parent1 = self.tournamentSelection(pop)
             parent2 = self.tournamentSelection(pop)
-#            parent1 = self.roulletteWheelSelection(pop)
-#            parent2 = self.roulletteWheelSelection(pop)
-            child = self.crossover(parent1, parent2)
-            #child = self.cycleCrossOver(parent1, parent2)
+            #parent1 = self.roulletteWheelSelection(pop)
+            #parent2 = self.roulletteWheelSelection(pop)
             #child = self.Ordercrossover(parent1, parent2)
+            child = self.cycleCrossOver(parent1, parent2)
             #child = self.edgeRecombination(parent1, parent2)
-            #cycleCrossOver
-            #crossoverSimple
-            #Ordercrossover
             newPopulation.saveTour(i, child)
         for i in range(elitismOffset, newPopulation.populationSize()):
             self.mutate(newPopulation.getTour(i))

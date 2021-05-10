@@ -13,23 +13,14 @@ def distance(x, y):
 
 if __name__ == '__main__':
     # 1. get solution sequence and reordering (sort from 0)
-    with open('example_solution.csv', mode='r', newline='') as solution:
+    with open('solution.csv', mode='r', newline='') as solution:
 
         # read solution sequence
         reader = csv.reader(solution)
         for row in reader:
             sol.append(int(row[0]))
-
-        # reordering solution sequence
-        idx = sol.index(0)
-
-        front = sol[idx:]
-        back = sol[0:idx]
-
-        sol = front + back
-
         # expand 0 city (start) for simplicity
-        sol.append(int(0))
+        sol.append(sol[0])
 
     # 2. get TSP city map
     with open('TSP.csv', mode='r', newline='') as tsp:
@@ -41,6 +32,7 @@ if __name__ == '__main__':
     # 3. evaluate solution cost
     total_cost = 0
 
+    print('sol is ', sol)
     for idx in range(len(sol) - 1) :
         # get city positions
         pos_city_1 = [float(cities[sol[idx]][0]), float(cities[sol[idx]][1])]
@@ -48,7 +40,6 @@ if __name__ == '__main__':
 
         # distance calculation
         dist = distance(pos_city_1, pos_city_2)
-
         # accumulation
         total_cost += dist
 

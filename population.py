@@ -11,8 +11,8 @@ class Population:
             for i in range(0, populationSize):
                 print('population', i)
                 newTour = Tour()
-                newTour.generateIndividualRandom() # 랜덤
-                #newTour.generateIndividual() # 그리디
+                #newTour.generateIndividualRandom() # 랜덤
+                newTour.generateIndividual() # 그리디
                 #newTour.generateIndividual2() # 16분할
                 #newTour.generateIndividual3() # 64분할
                 self.saveTour(i, newTour)

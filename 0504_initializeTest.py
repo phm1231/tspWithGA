@@ -7,9 +7,8 @@ from cityManager import CityManager
 
 if __name__ == '__main__':
     population_size = 100
-    n_generations =  10
+    n_generations = 10
     setCnt = 300 # 자식 세대가 setCnt 만큼 진화하면서 부모보다 좋지 않은 결과를 없을 경우 종료
-    seed(0)
 
     # load the map
     map_original = cv2.imread('bg2.jpg')

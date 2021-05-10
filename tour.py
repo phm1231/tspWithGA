@@ -1,3 +1,4 @@
+  
 import math
 import random
 import numpy as np
@@ -70,9 +71,12 @@ class Tour:
         order_list = [0, 1, 4, 5, 7, 6, 3, 2, 8, 9, 12, 13, 15, 14, 11, 10]
         order_list2 = [0, 2, 8, 10, 11, 9, 3, 1, 4, 6, 12, 14, 15, 13, 7, 5]
 
+        selected_order_list = order_list
+        random.shuffle(selected_order_list)
+
         for i in range (0, 4):
             for j in range (0, 4):
-                split_index_list = CityManager.split2[order_list2[4*i + j]]
+                split_index_list = CityManager.split2[selected_order_list[4*i + j]]
 
                 if len(visited) == 0 :
                     start_city_index = random.choice(split_index_list)
@@ -90,7 +94,7 @@ class Tour:
 
                 condition_len = 0
                 for k in range(0, 4*i+j+1):
-                    condition_len += len(CityManager.split2[order_list2[k]])
+                    condition_len += len(CityManager.split2[selected_order_list[k]])
 
                 while(len(visited) < condition_len):
                     minimum_distance = 2 ** 31 - 1
@@ -117,10 +121,9 @@ class Tour:
         order_list3 = [0, 1, 4, 5, 16, 17, 20, 21, 23, 22, 19, 18, 7, 6, 3, 2, 8, 9, 12, 13, 24, 25, 28, 29, 31, 30, 27, 26, 15, 14, 11, 10, 32, 33, 36, 37, 48, 49, 52, 53, 55, 54, 51, 50, 39, 38, 35, 34, 40, 41, 44, 45, 56, 57, 60, 61, 63, 62, 59, 58, 47, 46, 43, 42]
         order_list4 = [0, 2, 8, 10, 32, 34, 40, 42, 43, 41, 35, 33, 11, 9, 3, 1, 4, 6, 12, 14, 36, 38, 44, 46, 47, 45, 39, 37, 15, 13, 7, 5, 16, 18, 24, 26, 48, 50, 56, 58, 59, 57, 51, 49, 27, 25, 19, 17, 20, 22, 28, 30, 52, 54, 60, 62, 63, 61, 55, 53, 31, 29, 23, 21]
         
-        prob = int(random.uniform(1.5, 2.5))
         order_list = order_list3
         random.shuffle(order_list)
-            
+
         for i in range (0, 4):
             for j in range (0, 4):
                 for k in range (0, 4):
