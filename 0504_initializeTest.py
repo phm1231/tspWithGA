@@ -1,13 +1,11 @@
 import cv2
-from random import seed
 from population import Population
 from GA import GA
 
 if __name__ == '__main__':
-    population_size = 30
+    population_size = 100
     n_generations = 10
     setCnt = 100 # 자식 세대가 setCnt 만큼 진화하면서 부모보다 좋지 않은 결과를 없을 경우 종료
-    seed(0)
 
     # load the map
     map_original = cv2.imread('bg2.jpg')
@@ -78,7 +76,7 @@ if __name__ == '__main__':
 #   
     print(fittest)
 
-    # f = open("solution.csv", "w")
-    # for i in range(len(fittest)):
-    #     f.write(str(fittest[i]) + '\n')
-    # f.close()
+    f = open("solution2.csv", "w")
+    for i in range(len(fittest)):
+        f.write(str(fittest[i]) + '\n')
+    f.close()

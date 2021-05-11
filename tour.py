@@ -43,7 +43,7 @@ class Tour:
             # print(city_nth)
             for next_city_index in range(CityManager.N_CITY):
                 next_city_length = self.citymanager.getDistance(start_city_index, next_city_index)
-                if next_city_length < minimum_distance and  next_city_index not in visited:
+                if next_city_length < minimum_distance and next_city_index not in visited:
                     minimum_distance = next_city_length
                     minimum_index = next_city_index
             self.setCity(city_nth, minimum_index)
@@ -51,6 +51,7 @@ class Tour:
             start_city_index = minimum_index
             visited.add(minimum_index)
         # print(temp)
+
         print('distance', self.getDistance())
 
     def generateIndivisualRandomSearch(self):
