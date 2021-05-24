@@ -29,8 +29,8 @@ class GA:
             # parent2 = self.roulletteWheelSelection(pop)
             child = self.edgeRecombination(parent1, parent2)
             newPopulation.saveTour(i, child)
-        for i in range(elitismOffset, newPopulation.populationSize()):
-            self.mutate(newPopulation.getTour(i))
+        # for i in range(elitismOffset, newPopulation.populationSize()):
+        #     self.mutate(newPopulation.getTour(i))
         return newPopulation
 
     def Ordercrossover(self, parent1, parent2):
@@ -163,6 +163,7 @@ class GA:
     def mutate(self, tour):
         for tourPos1 in range(0, tour.tourSize()):
             if random.random() < self.mutationRate:
+
                 tourPos2 = int(tour.tourSize() * random.random())
 
                 city1 = tour.getCity(tourPos1)
@@ -170,6 +171,13 @@ class GA:
 
                 tour.setCity(tourPos2, city1)
                 tour.setCity(tourPos1, city2)
+
+    def exchangeMutate(self, tour):
+        if random.random() < self.mutationRate:
+            nptour = np.array(tour)
+            distances = nptour.argsort()
+            tour.setCity(tour[distances[-1]], distances[-2])
+            tour.setCity(tour[distances[-2]], distances[-1])
 
     def tournamentSelection(self, pop):
         tournament = Population(self.tournamentSize, False)
